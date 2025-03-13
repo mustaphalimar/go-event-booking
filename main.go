@@ -1,21 +1,15 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/mustaphalimar/event-booking/models"
 )
 
 func main() {
 	server := gin.Default()
 
-	server.GET("/events", getEvents)
+	server.GET("/events", models.GetEvents)
+	server.POST("/events", models.CreateEvent)
 
 	server.Run(":8080") // dev env: localhost:8080
-}
-
-func getEvents(context *gin.Context) {
-	context.JSON(http.StatusOK, gin.H{
-		"success": true,
-	})
 }
