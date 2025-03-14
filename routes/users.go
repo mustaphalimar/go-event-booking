@@ -13,7 +13,7 @@ func signUp(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"error":   "Failed to bind json data.",
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -23,12 +23,38 @@ func signUp(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   "Could not save user.",
+			"error":   err.Error(),
 		})
 		return
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
+		"success": true,
+	})
+}
+
+func login(ctx *gin.Context) {
+	var user models.User
+	err := ctx.ShouldBindJSON(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"error":   "Could not save user.",
+		})
+		return
+	}
+
+	err = user.ValidateCredentials()
+
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"success": false,
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
 		"success": true,
 	})
 }

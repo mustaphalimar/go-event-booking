@@ -1,9 +1,12 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mustaphalimar/event-booking/db"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/mustaphalimar/event-booking/utils"
 )
 
@@ -37,4 +40,28 @@ func (user User) Save() error {
 	user.ID = userId
 
 	return err
+}
+
+func (user User) ValidateCredentials() error {
+	query := "SELECT password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, user.Email)
+
+	var retrievedPassword string
+	err := row.Scan(&retrievedPassword)
+	if err != nil {
+		return errors.New("Invalid credentials.")
+	}
+
+	isPasswordMatch := ComparePasswordHash(user.Password, retrievedPassword)
+
+	if !isPasswordMatch {
+		return errors.New("Invalid credentials.")
+	}
+
+	return nil
+}
+
+func ComparePasswordHash(password, hashedPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return err == nil
 }

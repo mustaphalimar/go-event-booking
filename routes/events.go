@@ -24,7 +24,7 @@ func getEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -33,7 +33,7 @@ func getEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -51,7 +51,7 @@ func createEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -62,7 +62,7 @@ func createEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -79,7 +79,7 @@ func updateEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -88,7 +88,7 @@ func updateEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -98,7 +98,7 @@ func updateEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -108,7 +108,7 @@ func updateEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -123,7 +123,7 @@ func deleteEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -141,7 +141,7 @@ func deleteEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
