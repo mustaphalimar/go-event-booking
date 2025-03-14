@@ -49,7 +49,7 @@ func createEvent(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&event)
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
 			"error":   err,
 		})
