@@ -17,7 +17,6 @@ func signUp(ctx *gin.Context) {
 		})
 		return
 	}
-
 	err = user.Save()
 
 	if err != nil {
