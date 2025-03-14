@@ -132,7 +132,7 @@ func deleteEvent(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"success": false,
-			"error":   "Event with id not found!",
+			"error":   "Event with id  not found!",
 		})
 		return
 	}
