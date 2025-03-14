@@ -77,7 +77,7 @@ func updateEvent(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
+		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"success": false,
 			"error":   err,
 		})
@@ -86,7 +86,7 @@ func updateEvent(ctx *gin.Context) {
 
 	_, err = models.GetEventById(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusNotFound, gin.H{
 			"success": false,
 			"error":   err,
 		})
@@ -112,6 +112,40 @@ func updateEvent(ctx *gin.Context) {
 		})
 		return
 	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": true,
+	})
+}
+
+func deleteEvent(ctx *gin.Context) {
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"error":   err,
+		})
+		return
+	}
+
+	event, err := models.GetEventById(id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"success": false,
+			"error":   "Event with id not found!",
+		})
+		return
+	}
+
+	err = event.Delete()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"success": false,
+			"error":   err,
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"success": true,
 	})
