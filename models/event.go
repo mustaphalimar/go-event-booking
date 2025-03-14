@@ -102,3 +102,20 @@ func CreateEvent(context *gin.Context) {
 		"data":    event,
 	})
 }
+
+func (event Event) Update() error {
+	query := `
+		UPDATE events
+		SET name = ?,description = ?,location = ?,date_time = ?
+		WHERE id = ?
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.Datetime, event.ID)
+	return err
+}
