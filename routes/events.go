@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mustaphalimar/event-booking/models"
-	"github.com/mustaphalimar/event-booking/utils"
 )
 
 func getEvents(ctx *gin.Context) {
@@ -46,26 +45,9 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
-	tokenHeader := ctx.Request.Header.Get("Authentication")
-	if tokenHeader == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"success": false,
-			"error":   "Unauthorized, token not provided!",
-		})
-		return
-	}
-
-	err := utils.VerifyToken(tokenHeader)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"success": false,
-			"error":   err.Error(),
-		})
-		return
-	}
 
 	var event models.Event
-	err = ctx.ShouldBindJSON(&event)
+	err := ctx.ShouldBindJSON(&event)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -74,7 +56,8 @@ func createEvent(ctx *gin.Context) {
 		})
 		return
 	}
-	event.UserID = 1
+	userId := ctx.GetInt64("userId")
+	event.UserID = userId
 
 	err = event.Save()
 	if err != nil {
